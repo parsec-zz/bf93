@@ -24,7 +24,7 @@ static void populate(FILE *stream)
             memory[x][y] = c;
         }
         if (x == WIDTH)
-            while ((c = getchar()) != '\n' && c != EOF)
+            while ((c = fgetc(stream)) != '\n' && c != EOF)
                 ;
     }
 }
