@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define STACK_SIZE 1024
+#define STACK_SIZE 4098
 
 struct stack {
     int data[STACK_SIZE];
