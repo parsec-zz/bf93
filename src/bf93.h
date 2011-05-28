@@ -79,6 +79,6 @@ extern struct program_counter pc;
             pc.x_dir = PC_WEST;                                 \
             pc.y_dir = PC_STAY;                                 \
         } while (0)
-#endif
+#endif /* INLINE */
 
 #endif /* BF93_H__ */

@@ -42,9 +42,12 @@ static void bf_not(void)
     s.data[s.counter - 1] = !s.data[s.counter - 1];
 } 
 
+/* FIXME check for pop()ability
+ */
 static void bf_greater(void)
 {
-    stack_op(>);
+    s.data[s.counter - 2] = s.data[s.counter - 2] > s.data[s.counter - 1];
+    s.counter--;
 } 
 
 static void bf_right(void)
@@ -121,7 +124,7 @@ static void bf_pop_int(void)
 {
     int x;
     stack_popret(&x);
-    printf("%d", x);
+    printf("%d ", x);
 } 
 
 static void bf_pop_char(void)
@@ -136,19 +139,26 @@ static void bf_bridge(void)
     pc_advance();
 } 
 
+/* FIXME incremental fetching?
+ */
 static void bf_get(void)
 {
     int x, y;
+    //puts("get");
     stack_popret(&y);
     stack_popret(&x);
-    stack_push(memory[x][y]);
+    stack_push(x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT ? memory[x][y] : ' ');
 } 
 
+/* FIXME incremental fetching?
+ */
 static void bf_put(void)
 {
     int v, x, y;
     stack_popret(&y);
     stack_popret(&x);
+    if (!(x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT))
+            return;
     stack_popret(&v);
     memory[x][y] = v;
 } 
@@ -184,7 +194,6 @@ PUSH(9)
 
 static void bf_end(void)
 {
-    putchar('\n');
     exit(EXIT_SUCCESS);
 } 
 

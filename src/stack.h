@@ -1,6 +1,10 @@
 #ifndef STACK_H__
 #define STACK_H__
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
 #define STACK_SIZE 1024
 
 struct stack {
@@ -81,15 +85,22 @@ struct stack {
         do {                                                    \
             int i;                                              \
             for (i = 0; i < s.counter; ++i)                     \
-                printf("%d(%c) ", i, s.data[i]);                \
+                printf("%d[%c](%d) ",                           \
+                        i,                                      \
+                        isprint(s.data[i]) ? s.data[i] : ' ',   \
+                        s.data[i]);                             \
             putchar('\n');                                      \
         } while (0)
-#endif
+#endif /* INLINE */
 
+/* FIXME optimize!
+ */
 #define stack_op(op)                                            \
     do {                                                        \
-        s.data[s.counter - 2] op ## =  s.data[s.counter - 1];   \
-        s.counter--;                                            \
+        int a, b;                                               \
+        stack_popret(&b);                                       \
+        stack_popret(&a);                                       \
+        stack_push(a op b);                                     \
     } while (0)
 
 #endif /* STACK_H__ */

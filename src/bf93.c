@@ -8,7 +8,6 @@
 extern void (*ops[])(void);
 
 int mode;
-//struct stack s;
 struct program_counter pc = { 0, 0, PC_EAST, PC_STAY }; 
 char memory[WIDTH][HEIGHT];
 
@@ -33,22 +32,28 @@ static void populate(void)
 static void show(void)
 {
     int x, y;
-   
-    puts("===================="); 
+
+    for (x = 0; x < WIDTH; ++x)
+        putchar('=');
+    putchar('\n');
+    
     for (y = 0; y < HEIGHT; ++y) {
         for (x = 0; x < WIDTH; ++x) {
-            putchar(isprint(memory[x][y]) ? memory[x][y] : '.');
+            putchar(isprint(memory[x][y]) ? memory[x][y] : ' ');
         }
         putchar('\n');
     }
-    puts("===================="); 
+    
+    for (x = 0; x < WIDTH; ++x)
+        putchar('=');
+    putchar('\n');
 }
 
 int main(void)
 {
     populate();
     show();
-    
+
     for (;;) {
         int op = memory[pc.x][pc.y];
 
