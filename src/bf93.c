@@ -11,13 +11,13 @@ int mode;
 struct program_counter pc = { 0, 0, PC_EAST, PC_STAY }; 
 char memory[WIDTH][HEIGHT];
 
-static void populate(void)
+static void populate(FILE *stream)
 {
     int c, x, y;
 
     for (y = 0; y < HEIGHT; ++y) {
         for (x = 0; x < WIDTH; ++x) {
-            if ((c = getchar()) == EOF)
+            if ((c = fgetc(stream)) == EOF)
                 return;
             if (c == '\n')
                 break;
@@ -49,9 +49,21 @@ static void show(void)
     putchar('\n');
 }
 
-int main(void)
+/* FIXME add actual argument handling
+ */
+int main(int argc, char **argv)
 {
-    populate();
+    FILE *fp;
+
+    if (argc != 2)
+        return EXIT_FAILURE;
+
+    if (!(fp = fopen(argv[1], "r")))
+        return EXIT_FAILURE;
+
+    populate(fp);
+    fclose(fp);
+
     show();
 
     for (;;) {
@@ -64,6 +76,5 @@ int main(void)
                 ops[op]();
         pc_advance();
     }
-    puts("oh noes");
     return EXIT_FAILURE; /* shouldn't reach */
 }
