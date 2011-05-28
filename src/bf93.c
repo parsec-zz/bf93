@@ -1,9 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 #include <ctype.h>
+
+#include <getopt.h>
 
 #include "bf93.h"
 #include "stack.h"
+
+const char *prog = "bf93";
 
 extern void (*ops[])(void);
 
@@ -49,31 +55,63 @@ static void show(void)
     putchar('\n');
 }
 
-/* FIXME add actual argument handling
- */
+static void usage(FILE *stream)
+{
+    fprintf(stream,
+            "usage: %s [option] <filename>\n"
+            " -h    display this message\n"
+            " -s    show populated memory\n",
+            prog);
+}
+
 int main(int argc, char **argv)
 {
-    FILE *fp;
+    if (argv[0] && argv[0][0])
+        prog = argv[0];
+    
+    {
+        FILE *fp;
+        int c, do_show = 0;
+        
+        while ((c = getopt(argc, argv, "hs")) != -1) {
+            switch (c) {
+                case 'h':
+                    usage(stdout);
+                    return EXIT_SUCCESS;
 
-    if (argc != 2)
-        return EXIT_FAILURE;
+                case 's':
+                    do_show = 1;
+                    break;
 
-    if (!(fp = fopen(argv[1], "r")))
-        return EXIT_FAILURE;
+                default:
+                    usage(stderr);
+                    return EXIT_FAILURE;
+            }    
+        }
 
-    populate(fp);
-    fclose(fp);
+        if (optind != argc - 1) {
+            usage(stderr);
+            return EXIT_FAILURE;
+        }
+        if (!(fp = fopen(argv[optind], "r"))) {
+            fprintf(stderr, "%s: %s: %s\n", prog, argv[optind], strerror(errno));
+            return EXIT_FAILURE;
+        }
+        populate(fp);
+        fclose(fp);
 
-    show();
+        if (do_show)
+            show();
+    }
 
     for (;;) {
-        int op = memory[pc.x][pc.y];
+        int c = memory[pc.x][pc.y];
 
-        if (mode && op != '"')  /* text mode */
-            stack_push(op);
+        if (mode && c != '"')  /* text mode */
+            stack_push(c);
         else                    /* code mode */
-            if (op < 128 && op > 0)
-                ops[op]();
+            if (c < 128 && c > 0)
+                ops[c]();
         pc_advance();
     }
     return EXIT_FAILURE; /* shouldn't reach */
