@@ -15,7 +15,9 @@ extern void (*ops[])(void);
 
 int mode;
 struct program_counter pc = { 0, 0, PC_EAST, PC_STAY }; 
-char memory[WIDTH][HEIGHT];
+
+typedef int mem_data;
+mem_data memory[WIDTH][HEIGHT];
 
 static void populate(FILE *stream)
 {
@@ -45,7 +47,7 @@ static void show(void)
     
     for (y = 0; y < HEIGHT; ++y) {
         for (x = 0; x < WIDTH; ++x) {
-            putchar(isprint(memory[x][y]) ? memory[x][y] : ' ');
+            putchar(isprint(memory[x][y]) ? (int)memory[x][y] : ' ');
         }
         putchar('\n');
     }
@@ -105,7 +107,7 @@ int main(int argc, char **argv)
     }
 
     for (;;) {
-        int c = memory[pc.x][pc.y];
+        mem_data c = memory[pc.x][pc.y];
 
         if (mode && c != '"')  /* text mode */
             stack_push(c);
