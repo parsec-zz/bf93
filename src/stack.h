@@ -16,6 +16,8 @@ struct stack {
     int counter;
 } s;
 
+extern const char *prog;
+
 #ifdef INLINE
     static inline void stack_pop(void)
     {
@@ -58,9 +60,10 @@ struct stack {
 
     #define stack_push(x)                                       \
         do {                                                    \
-            if (STACK_SIZE - s.counter == 0)                    \
+            if (STACK_SIZE - s.counter == 0) {                  \
+                fprintf(stderr, "%s: Stack overflow\n", prog);  \
                 exit(EXIT_FAILURE);                             \
-            else                                                \
+            } else                                              \
                 s.data[s.counter++] = (x);                      \
         } while (0)
 
@@ -77,9 +80,11 @@ struct stack {
 
     #define stack_swp()                                         \
         do {                                                    \
-            int tmp;                                            \
-            if (s.counter < 2)                                  \
+            stack_data tmp;                                     \
+            if (s.counter < 2) {                                \
+                fprintf(stderr, "%s: Stack underflow\n", prog); \
                 exit(EXIT_FAILURE);                             \
+            }                                                   \
             tmp = s.data[s.counter - 1];                        \
             s.data[s.counter - 1] = s.data[s.counter - 2];      \
             s.data[s.counter - 2] = tmp;                        \
@@ -102,7 +107,7 @@ struct stack {
  */
 #define stack_op(op)                                            \
     do {                                                        \
-        int a, b;                                               \
+        stack_data a, b;                                        \
         stack_popret(&b);                                       \
         stack_popret(&a);                                       \
         stack_push(a op b);                                     \
