@@ -19,66 +19,66 @@ extern struct program_counter pc;
 #define PC_WEST     (-1)
 #define PC_STAY     0
 
-#if 0
-static inline pc_advance(void)
-{
-    pc.x = (pc.x + pc.x_dir + WIDTH) % WIDTH;
-    pc.y = (pc.y + pc.y_dir + HEIGHT) % HEIGHT;
-}
+#ifdef INLINE
+    static inline pc_advance(void)
+    {
+        pc.x = (pc.x + pc.x_dir + WIDTH) % WIDTH;
+        pc.y = (pc.y + pc.y_dir + HEIGHT) % HEIGHT;
+    }
 
-static inline pc_set_north(void)
-{
-    pc.x_dir = PC_STAY;
-    pc.y_dir = PC_NORTH;
-}
+    static inline pc_set_north(void)
+    {
+        pc.x_dir = PC_STAY;
+        pc.y_dir = PC_NORTH;
+    }
 
-static inline pc_set_south(void)
-{
-    pc.x_dir = PC_STAY;
-    pc.y_dir = PC_SOUTH;
-}
+    static inline pc_set_south(void)
+    {
+        pc.x_dir = PC_STAY;
+        pc.y_dir = PC_SOUTH;
+    }
 
-static inline pc_set_east(void)
-{
-    pc.x_dir = PC_EAST;
-    pc.y_dir = PC_STAY;
-}
+    static inline pc_set_east(void)
+    {
+        pc.x_dir = PC_EAST;
+        pc.y_dir = PC_STAY;
+    }
 
-static inline pc_set_west(void)
-{
-    pc.x_dir = PC_WEST;
-    pc.y_dir = PC_STAY;
-}
+    static inline pc_set_west(void)
+    {
+        pc.x_dir = PC_WEST;
+        pc.y_dir = PC_STAY;
+    }
+#else
+    #define pc_advance()                                        \
+        do {                                                    \
+            pc.x = (pc.x + pc.x_dir + WIDTH) % WIDTH;           \
+            pc.y = (pc.y + pc.y_dir + HEIGHT) % HEIGHT;         \
+        } while (0)
+
+    #define pc_set_north()                                      \
+        do {                                                    \
+            pc.x_dir = PC_STAY;                                 \
+            pc.y_dir = PC_NORTH;                                \
+        } while (0)                                             \
+
+    #define pc_set_south()                                      \
+        do {                                                    \
+            pc.x_dir = PC_STAY;                                 \
+            pc.y_dir = PC_SOUTH;                                \
+        } while (0)
+
+    #define pc_set_east()                                       \
+        do {                                                    \
+            pc.x_dir = PC_EAST;                                 \
+            pc.y_dir = PC_STAY;                                 \
+        } while (0)
+
+    #define pc_set_west()                                       \
+        do {                                                    \
+            pc.x_dir = PC_WEST;                                 \
+            pc.y_dir = PC_STAY;                                 \
+        } while (0)
 #endif
-
-#define pc_advance()                                            \
-    do {                                                        \
-        pc.x = (pc.x + pc.x_dir + WIDTH) % WIDTH;               \
-        pc.y = (pc.y + pc.y_dir + HEIGHT) % HEIGHT;             \
-    } while (0)
-
-#define pc_set_north()                                          \
-    do {                                                        \
-        pc.x_dir = PC_STAY;                                     \
-        pc.y_dir = PC_NORTH;                                    \
-    } while (0)                                                 \
-
-#define pc_set_south()                                          \
-    do {                                                        \
-        pc.x_dir = PC_STAY;                                     \
-        pc.y_dir = PC_SOUTH;                                    \
-    } while (0)
-
-#define pc_set_east()                                           \
-    do {                                                        \
-        pc.x_dir = PC_EAST;                                     \
-        pc.y_dir = PC_STAY;                                     \
-    } while (0)
-
-#define pc_set_west()                                           \
-    do {                                                        \
-        pc.x_dir = PC_WEST;                                     \
-        pc.y_dir = PC_STAY;                                     \
-    } while (0)
 
 #endif /* BF93_H__ */

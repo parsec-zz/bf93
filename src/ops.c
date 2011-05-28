@@ -79,7 +79,7 @@ static void bf_random(void)
 static void bf_horizontal_if(void)
 {
     int x;
-    stack_popret(x);
+    stack_popret(&x);
     if (x)
         pc_set_west();
     else
@@ -89,7 +89,7 @@ static void bf_horizontal_if(void)
 static void bf_vertical_if(void)
 {
     int x;
-    stack_popret(x);
+    stack_popret(&x);
     if (x)
         pc_set_north();
     else
@@ -119,14 +119,14 @@ static void bf_pop(void)
 static void bf_pop_int(void)
 {
     int x;
-    stack_popret(x);
+    stack_popret(&x);
     printf("%d", x);
 } 
 
 static void bf_pop_char(void)
 {
     int x;
-    stack_popret(x);
+    stack_popret(&x);
     putchar(x);
 } 
 
@@ -138,17 +138,17 @@ static void bf_bridge(void)
 static void bf_get(void)
 {
     int x, y;
-    stack_popret(y);
-    stack_popret(x);
+    stack_popret(&y);
+    stack_popret(&x);
     stack_push(memory[x][y]);
 } 
 
 static void bf_put(void)
 {
     int v, x, y;
-    stack_popret(y);
-    stack_popret(x);
-    stack_popret(v);
+    stack_popret(&y);
+    stack_popret(&x);
+    stack_popret(&v);
     memory[x][y] = v;
 } 
 
