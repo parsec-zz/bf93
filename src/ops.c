@@ -5,8 +5,11 @@
 #include "stack.h"
 
 extern int mode;
+extern char memory[WIDTH][HEIGHT];
 
-static void bf_nop(void) { }
+static void bf_nop(void)
+{
+}
 
 static void bf_add(void)
 {
@@ -33,7 +36,10 @@ static void bf_modulo(void)
     stack_op(%);
 } 
 
-static void bf_not(void) { } 
+static void bf_not(void)
+{
+    s.data[s.counter - 1] = !s.data[s.counter - 1];
+} 
 
 static void bf_greater(void)
 {
@@ -60,7 +66,15 @@ static void bf_down(void)
     pc_set_south();
 } 
 
-static void bf_random(void) { } 
+static void bf_random(void)
+{
+    switch (rand() % 4) {
+        case 0: pc_set_north(); break;
+        case 1: pc_set_east(); break;
+        case 2: pc_set_south(); break;
+        case 3: pc_set_west(); break;
+    }
+} 
 
 static void bf_horizontal_if(void)
 {
@@ -72,7 +86,15 @@ static void bf_horizontal_if(void)
         pc_set_east();
 } 
 
-static void bf_vertical_if(void) { } 
+static void bf_vertical_if(void)
+{
+    int x;
+    stack_popret(x);
+    if (x)
+        pc_set_north();
+    else
+        pc_set_south();
+} 
 
 static void bf_stringmode(void)
 {
@@ -113,36 +135,51 @@ static void bf_bridge(void)
     pc_advance();
 } 
 
-static void bf_get(void) { } 
-
-static void bf_put(void) { } 
-
-static void bf_input_value(void) { } 
-
-static void bf_input_character(void) { } 
-
-static void bf_push0(void)
+static void bf_get(void)
 {
-    stack_push(0);
-}
+    int x, y;
+    stack_popret(y);
+    stack_popret(x);
+    stack_push(memory[x][y]);
+} 
 
-static void bf_push1(void) { }
+static void bf_put(void)
+{
+    int v, x, y;
+    stack_popret(y);
+    stack_popret(x);
+    stack_popret(v);
+    memory[x][y] = v;
+} 
 
-static void bf_push2(void) { }
+static void bf_input_value(void)
+{
+    int x;
+    scanf("%d", &x);
+    stack_push(x);
+} 
 
-static void bf_push3(void) { }
+static void bf_input_character(void)
+{
+    stack_push(getchar());
+} 
 
-static void bf_push4(void) { }
-
-static void bf_push5(void) { }
-
-static void bf_push6(void) { }
-
-static void bf_push7(void) { }
-
-static void bf_push8(void) { }
-
-static void bf_push9(void) { }
+#define PUSH(n)                                                 \
+    static void bf_push ## n(void)                              \
+    {                                                           \
+        stack_push(n);                                          \
+    }
+PUSH(0)
+PUSH(1)
+PUSH(2)
+PUSH(3)
+PUSH(4)
+PUSH(5)
+PUSH(6)
+PUSH(7)
+PUSH(8)
+PUSH(9)
+#undef PUSH
 
 static void bf_end(void)
 {
