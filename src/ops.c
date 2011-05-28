@@ -144,7 +144,6 @@ static void bf_bridge(void)
 static void bf_get(void)
 {
     int x, y;
-    //puts("get");
     stack_popret(&y);
     stack_popret(&x);
     stack_push(x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT ? memory[x][y] : ' ');
@@ -165,7 +164,7 @@ static void bf_put(void)
 
 static void bf_input_value(void)
 {
-    int x;
+    int x = ' ';
     scanf("%d", &x);
     stack_push(x);
 } 
