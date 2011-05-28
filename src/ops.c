@@ -4,13 +4,9 @@
 #include "bf93.h"
 #include "stack.h"
 
-//struct program_counter pc;
-//struct stack s;
-
 extern int mode;
 
 static void bf_nop(void) { }
-
 
 static void bf_add(void)
 {
@@ -155,47 +151,47 @@ static void bf_end(void)
 } 
 
 void (*ops[])(void) = {
-#define A &bf_nop
-#define B A, A, A, A,  A, A, A, A
-#define C B, B, B, B,  B, B, B, B
+#define A   bf_nop
+#define B   A, A, A, A,  A, A, A, A
+#define C   B, B, B, B,  B, B, B, B
     C, C,
 #undef C
 #undef B
 #undef A
-    ['+'] = &bf_add,
-    ['-'] = &bf_substract,
-    ['*'] = &bf_multiply,
-    ['/'] = &bf_divide,
-    ['%'] = &bf_modulo,
-    ['!'] = &bf_not,
-    ['`'] = &bf_greater,
-    ['>'] = &bf_right,
-    ['<'] = &bf_left,
-    ['^'] = &bf_up,
-    ['v'] = &bf_down,
-    ['?'] = &bf_random,
-    ['_'] = &bf_horizontal_if,
-    ['|'] = &bf_vertical_if,
-    ['"'] = &bf_stringmode,
-    [':'] = &bf_dup,
-    ['\\'] = &bf_swap,
-    ['$'] = &bf_pop,
-    ['.'] = &bf_pop_int,
-    [','] = &bf_pop_char,
-    ['#'] = &bf_bridge,
-    ['g'] = &bf_get,
-    ['p'] = &bf_put,
-    ['&'] = &bf_input_value,
-    ['~'] = &bf_input_character,
-    ['0'] = &bf_push0,
-    ['1'] = &bf_push1,
-    ['2'] = &bf_push2,
-    ['3'] = &bf_push3,
-    ['4'] = &bf_push4,
-    ['5'] = &bf_push5,
-    ['6'] = &bf_push6,
-    ['7'] = &bf_push7,
-    ['8'] = &bf_push8,
-    ['9'] = &bf_push9,
-    ['@'] = &bf_end
+    ['+'] = bf_add,
+    ['-'] = bf_substract,
+    ['*'] = bf_multiply,
+    ['/'] = bf_divide,
+    ['%'] = bf_modulo,
+    ['!'] = bf_not,
+    ['`'] = bf_greater,
+    ['>'] = bf_right,
+    ['<'] = bf_left,
+    ['^'] = bf_up,
+    ['v'] = bf_down,
+    ['?'] = bf_random,
+    ['_'] = bf_horizontal_if,
+    ['|'] = bf_vertical_if,
+    ['"'] = bf_stringmode,
+    [':'] = bf_dup,
+    ['\\'] = bf_swap,
+    ['$'] = bf_pop,
+    ['.'] = bf_pop_int,
+    [','] = bf_pop_char,
+    ['#'] = bf_bridge,
+    ['g'] = bf_get,
+    ['p'] = bf_put,
+    ['&'] = bf_input_value,
+    ['~'] = bf_input_character,
+    ['0'] = bf_push0,
+    ['1'] = bf_push1,
+    ['2'] = bf_push2,
+    ['3'] = bf_push3,
+    ['4'] = bf_push4,
+    ['5'] = bf_push5,
+    ['6'] = bf_push6,
+    ['7'] = bf_push7,
+    ['8'] = bf_push8,
+    ['9'] = bf_push9,
+    ['@'] = bf_end
 };
