@@ -8,7 +8,7 @@
 extern void (*ops[])(void);
 
 int mode;
-struct stack s;
+//struct stack s;
 struct program_counter pc = { 0, 0, PC_EAST, PC_STAY }; 
 char memory[WIDTH][HEIGHT];
 
@@ -59,5 +59,6 @@ int main(void)
                 ops[op]();
         pc_advance();
     }
+    puts("oh noes");
     return EXIT_FAILURE; /* shouldn't reach */
 }

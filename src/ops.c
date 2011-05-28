@@ -6,6 +6,7 @@
 
 extern int mode;
 extern char memory[WIDTH][HEIGHT];
+extern struct stack s;
 
 static void bf_nop(void)
 {

@@ -6,9 +6,7 @@
 struct stack {
     int data[STACK_SIZE];
     int counter;
-};
-
-extern struct stack s;
+} s;
 
 #ifdef INLINE
     static inline void stack_pop(void)
@@ -71,7 +69,12 @@ extern struct stack s;
 
     #define stack_swp()                                         \
         do {                                                    \
-            ;                                                   \
+            int tmp;                                            \
+            if (s.counter < 2)                                  \
+                exit(EXIT_FAILURE);                             \
+            tmp = s.data[s.counter - 1];                        \
+            s.data[s.counter - 1] = s.data[s.counter - 2];      \
+            s.data[s.counter - 2] = tmp;                        \
         } while (0)
 
     #define stack_debug()                                       \
@@ -83,9 +86,10 @@ extern struct stack s;
         } while (0)
 #endif
 
-#define stack_op(o)                                             \
+#define stack_op(op)                                            \
     do {                                                        \
-        ;                                                       \
+        s.data[s.counter - 2] op ## =  s.data[s.counter - 1];   \
+        s.counter--;                                            \
     } while (0)
 
 #endif /* STACK_H__ */
