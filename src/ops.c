@@ -82,7 +82,8 @@ static void bf_random(void)
 
 static void bf_horizontal_if(void)
 {
-    int x;
+    stack_data x;
+    
     stack_popret(&x);
     if (x)
         pc_set_west();
@@ -92,7 +93,8 @@ static void bf_horizontal_if(void)
 
 static void bf_vertical_if(void)
 {
-    int x;
+    stack_data x;
+
     stack_popret(&x);
     if (x)
         pc_set_north();
@@ -122,14 +124,15 @@ static void bf_pop(void)
 
 static void bf_pop_int(void)
 {
-    int x;
+    stack_data x;
+    
     stack_popret(&x);
-    printf("%d ", x);
+    printf(STACK_DATA_FMT " ", x);
 } 
 
 static void bf_pop_char(void)
 {
-    int x;
+    stack_data x;
     stack_popret(&x);
     putchar(x);
 } 
@@ -144,6 +147,7 @@ static void bf_bridge(void)
 static void bf_get(void)
 {
     int x, y;
+
     stack_popret(&y);
     stack_popret(&x);
     stack_push(x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT ? memory[x][y] : ' ');
@@ -153,7 +157,8 @@ static void bf_get(void)
  */
 static void bf_put(void)
 {
-    int v, x, y;
+    stack_data v, x, y;
+
     stack_popret(&y);
     stack_popret(&x);
     if (!(x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT))
@@ -164,8 +169,9 @@ static void bf_put(void)
 
 static void bf_input_value(void)
 {
-    int x = ' ';
-    scanf("%d", &x);
+    stack_data x = ' ';
+
+    scanf(STACK_DATA_FMT, &x);
     stack_push(x);
 } 
 

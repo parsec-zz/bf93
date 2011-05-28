@@ -5,10 +5,14 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define STACK_SIZE 4098
+#ifndef STACK_SIZE
+    #define STACK_SIZE 4098
+#endif
+typedef long int stack_data;
+#define STACK_DATA_FMT "%ld"
 
 struct stack {
-    int data[STACK_SIZE];
+    stack_data data[STACK_SIZE];
     int counter;
 } s;
 
@@ -85,11 +89,12 @@ struct stack {
         do {                                                    \
             int i;                                              \
             for (i = 0; i < s.counter; ++i)                     \
-                printf("%d[%c](%d) ",                           \
-                        i,                                      \
-                        isprint(s.data[i]) ? s.data[i] : ' ',   \
+                fprintf(stderr, "[%c](" STACK_DATA_FMT ") ",    \
+                        isprint(s.data[i]) ?                    \
+                            (int)s.data[i] :                    \
+                            ' ',                                \
                         s.data[i]);                             \
-            putchar('\n');                                      \
+            fputc('\n', stderr);                                \
         } while (0)
 #endif /* INLINE */
 
