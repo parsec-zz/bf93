@@ -19,65 +19,75 @@ extern struct program_counter pc;
 #define PC_WEST     (-1)
 #define PC_STAY     0
 
+#define pc_advance_body                                         \
+    pc.x = (pc.x + pc.x_dir + WIDTH) % WIDTH;                   \
+    pc.y = (pc.y + pc.y_dir + HEIGHT) % HEIGHT;
+
+#define pc_set_north_body                                       \
+    pc.x_dir = PC_STAY;                                         \
+    pc.y_dir = PC_NORTH;
+
+#define pc_set_south_body                                       \
+    pc.x_dir = PC_STAY;                                         \
+    pc.y_dir = PC_SOUTH;
+
+#define pc_set_east_body                                        \
+    pc.x_dir = PC_EAST;                                         \
+    pc.y_dir = PC_STAY;
+
+#define pc_set_west_body                                        \
+    pc.x_dir = PC_WEST;                                         \
+    pc.y_dir = PC_STAY;
+
 #ifdef INLINE
-    static inline pc_advance(void)
+    static inline void pc_advance(void)
     {
-        pc.x = (pc.x + pc.x_dir + WIDTH) % WIDTH;
-        pc.y = (pc.y + pc.y_dir + HEIGHT) % HEIGHT;
+        pc_advance_body
     }
 
-    static inline pc_set_north(void)
+    static inline void pc_set_north(void)
     {
-        pc.x_dir = PC_STAY;
-        pc.y_dir = PC_NORTH;
+        pc_set_north_body
     }
 
-    static inline pc_set_south(void)
+    static inline void pc_set_south(void)
     {
-        pc.x_dir = PC_STAY;
-        pc.y_dir = PC_SOUTH;
+        pc_set_south_body
     }
 
-    static inline pc_set_east(void)
+    static inline void pc_set_east(void)
     {
-        pc.x_dir = PC_EAST;
-        pc.y_dir = PC_STAY;
+        pc_set_east_body
     }
 
-    static inline pc_set_west(void)
+    static inline void pc_set_west(void)
     {
-        pc.x_dir = PC_WEST;
-        pc.y_dir = PC_STAY;
+        pc_set_west_body
     }
 #else
     #define pc_advance()                                        \
         do {                                                    \
-            pc.x = (pc.x + pc.x_dir + WIDTH) % WIDTH;           \
-            pc.y = (pc.y + pc.y_dir + HEIGHT) % HEIGHT;         \
+            pc_advance_body                                     \
         } while (0)
 
     #define pc_set_north()                                      \
         do {                                                    \
-            pc.x_dir = PC_STAY;                                 \
-            pc.y_dir = PC_NORTH;                                \
+            pc_set_north_body                                   \
         } while (0)                                             \
 
     #define pc_set_south()                                      \
         do {                                                    \
-            pc.x_dir = PC_STAY;                                 \
-            pc.y_dir = PC_SOUTH;                                \
+            pc_set_south_body                                   \
         } while (0)
 
     #define pc_set_east()                                       \
         do {                                                    \
-            pc.x_dir = PC_EAST;                                 \
-            pc.y_dir = PC_STAY;                                 \
+            pc_set_east_body                                    \
         } while (0)
 
     #define pc_set_west()                                       \
         do {                                                    \
-            pc.x_dir = PC_WEST;                                 \
-            pc.y_dir = PC_STAY;                                 \
+            pc_set_west_body                                    \
         } while (0)
 #endif /* INLINE */
 
