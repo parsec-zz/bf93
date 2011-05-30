@@ -6,7 +6,7 @@
 #include <ctype.h>
 
 #ifndef STACK_SIZE
-    #define STACK_SIZE 14098
+    #define STACK_SIZE 8192
 #endif
 typedef long int stack_data;
 #define STACK_DATA_FMT "%ld"
