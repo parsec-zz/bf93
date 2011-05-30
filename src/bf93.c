@@ -16,7 +16,7 @@ extern void (*ops[])(void);
 int mode;
 struct program_counter pc = { 0, 0, PC_EAST, PC_STAY }; 
 
-typedef char mem_data;
+typedef unsigned char mem_data;
 mem_data memory[WIDTH][HEIGHT];
 
 static void populate(FILE *stream)
