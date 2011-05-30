@@ -128,11 +128,13 @@ static void bf_pop_int(void)
     
     stack_popret(&x);
     printf(STACK_DATA_FMT " ", x);
+    fflush(stdout);
 } 
 
 static void bf_pop_char(void)
 {
     stack_data x;
+    
     stack_popret(&x);
     putchar(x);
 } 
@@ -146,7 +148,7 @@ static void bf_bridge(void)
  */
 static void bf_get(void)
 {
-    int x, y;
+    stack_data x, y;
 
     stack_popret(&y);
     stack_popret(&x);
