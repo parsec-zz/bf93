@@ -65,10 +65,10 @@ extern const char *prog;
     int i;                                                      \
     for (i = 0; i < s.counter; ++i)                             \
     fprintf(stdout, "[%c](" STACK_DATA_FMT ") ",                \
-        isprint(s.data[i]) ?                                    \
-        (int)s.data[i] :                                        \
-        ' ',                                                    \
-        s.data[i]);                                             \
+            isprint(s.data[i]) ?                                \
+            (int)s.data[i] :                                    \
+            ' ',                                                \
+            s.data[i]);                                         \
     fputc('\n', stdout);
 
 #ifdef INLINE
@@ -143,14 +143,25 @@ extern const char *prog;
         } while (0)
 #endif /* INLINE */
 
-/* FIXME optimize!
- */
+#ifndef VROOM
+    #define stack_op(op)                                        \
+        do {                                                    \
+            if (s.counter < 2) {                                \
+                fprintf(stderr, "\n%s: Stack underflow\n",      \
+                        prog);                                  \
+                exit(EXIT_FAILURE);                             \
+            }                                                   \
+            s.data[s.counter - 2] = s.data[s.counter - 2] op    \
+                                    s.data[s.counter - 1];      \
+            s.counter--;                                        \
+        } while (0)
+#else
 #define stack_op(op)                                            \
-    do {                                                        \
-        stack_data a, b;                                        \
-        stack_popret(&b);                                       \
-        stack_popret(&a);                                       \
-        stack_push(a op b);                                     \
-    } while (0)
+        do {                                                    \
+            s.data[s.counter - 2] = s.data[s.counter - 2] op    \
+                                    s.data[s.counter - 1];      \
+            s.counter--;                                        \
+        } while (0)
+#endif
 
 #endif /* STACK_H__ */
